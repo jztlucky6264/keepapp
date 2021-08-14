@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { SettingsInputAntenna } from "@material-ui/icons";
+import React, { useState } from "react";
+import CreatNote from "./CreateNote";
+import Footer from "./Footer";
+import Header from "./Header";
+import Note from "./Note";
 
-function App() {
+const App = () => {
+  const [additems, setAddItems] = useState([]);
+  const addNote = (inp) => {
+    setAddItems((prevData) => {
+      return [...prevData, inp];
+    });
+  };
+  const clearNote = (id) => {
+    console.log("d");
+    setAddItems((prevData) => {
+      return prevData.filter((arrElem, index) => {
+        return index !== id;
+      });
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>
+      <Header></Header>
+      <CreatNote passNote={addNote} />
 
+      {additems.map((val, index) => {
+        return (
+          <Note
+            deleteNote={clearNote}
+            key={index}
+            id={index}
+            title={val.title}
+            content={val.content}
+          />
+        );
+      })}
+      <Footer></Footer>
+    </>
+  );
+};
 export default App;
